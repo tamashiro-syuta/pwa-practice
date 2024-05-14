@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 export default function Home() {
   const handleClick = () => {
@@ -8,20 +8,28 @@ export default function Home() {
 
     new Notification("テスト", {
       body: "テスト",
-      icon: "localhost:3001/",
     });
   };
 
-  useEffect(() => {
-    // NOTE: プッシュ通知の権限をリクエスト(本当はuseContextとかで管理するはず、たぶん)
-    Notification.requestPermission().then((permission) => {
+  const subscribePush = useCallback(async () => {
+    try {
+      const permission = await Notification.requestPermission();
       if (permission === "granted") {
         console.log("プッシュ通知の権限が許可されました。");
       } else {
         console.log("プッシュ通知の権限が拒否されました。");
       }
-    });
+    } catch (error) {
+      console.error(
+        "プッシュ通知の権限リクエストでエラーが発生しました:",
+        error
+      );
+    }
   }, []);
+
+  useEffect(() => {
+    subscribePush();
+  }, [subscribePush]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
