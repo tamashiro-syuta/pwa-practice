@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+
 export default function Home() {
   const handleClick = () => {
     console.log("Button clicked");
@@ -9,6 +11,17 @@ export default function Home() {
       icon: "localhost:3001/",
     });
   };
+
+  useEffect(() => {
+    // NOTE: プッシュ通知の権限をリクエスト(本当はuseContextとかで管理するはず、たぶん)
+    Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        alert("プッシュ通知の権限が許可されました。");
+      } else {
+        alert("プッシュ通知の権限が拒否されました。");
+      }
+    });
+  }, []);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
