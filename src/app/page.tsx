@@ -16,9 +16,9 @@ export default function Home() {
     // NOTE: プッシュ通知の権限をリクエスト(本当はuseContextとかで管理するはず、たぶん)
     Notification.requestPermission().then((permission) => {
       if (permission === "granted") {
-        alert("プッシュ通知の権限が許可されました。");
+        console.log("プッシュ通知の権限が許可されました。");
       } else {
-        alert("プッシュ通知の権限が拒否されました。");
+        console.log("プッシュ通知の権限が拒否されました。");
       }
     });
   }, []);
